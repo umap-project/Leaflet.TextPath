@@ -114,11 +114,20 @@ var PolylineTextPath = {
         }
 
         /* Center text according to the path's bounding box */
-        if (options.center) {
+        if (options.position === 'center' || options.center) {
             var textLength = textNode.getComputedTextLength();
             var pathLength = this._path.getTotalLength();
             /* Set the position for the left side of the textNode */
             textNode.setAttribute('dx', ((pathLength / 2) - (textLength / 2)));
+        }
+        else if (options.position === 'end') {
+            var textLength = textNode.getComputedTextLength();
+            var pathLength = this._path.getTotalLength();
+            // We add pixels to try to counter-balance the space around the character.
+            const dx = pathLength - textLength + 6
+            textNode.setAttribute('dx', dx);
+        } else {
+            // "start", which is the default.
         }
 
         /* Change label rotation (if required) */
